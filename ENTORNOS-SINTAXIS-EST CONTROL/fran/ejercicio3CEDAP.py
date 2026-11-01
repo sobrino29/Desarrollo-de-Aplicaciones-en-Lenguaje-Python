@@ -1,4 +1,3 @@
-
 '''Ejercicio 3. Entradas para un parque de atracciones
 Un parque de atracciones quiere crear un programa para calcular cuánto debe pagar una persona por su entrada.
 
@@ -44,7 +43,8 @@ Total a pagar: 29.00 €
 nombre_visitante = str(input('Introduce tu nombre: '))
 edad = int(input('Introduce tu edad: '))
 
-precio_entrada = float(input('Precio de la entrada: '))
+# El precio normal de la entrada es de 30 €.
+precio_entrada = 30
 
 # Menores de 4 años: entrada gratuita
 if edad < 4:
@@ -68,20 +68,18 @@ else:
 print(f"El precio de la entrada es: {precio_entrada} €")
                                 
 # Si el visitante quiere menú, se añadirán 8 € al importe final. El precio del menú no tiene descuento                                                
-ADICION = 8
-precio_menu = float(input('Precio del menú: '))
+MENU = 8
 
 menu_opcion = input('¿Quieres añadir un menú por 8 euros? (S/N): ')
 if menu_opcion == "S" or menu_opcion == "s":
         
-        total = precio_entrada + precio_menu + ADICION
+        total = precio_entrada + MENU
         
 else:
         total = precio_entrada
 
 
 ##### Ampliación opcional
-# Añade una pregunta para saber si el visitante quiere comprar una foto de recuerdo por 5 €.
 
 # Añade una pregunta para saber si el visitante quiere comprar una foto de recuerdo por 5 €.
 FOTO = 5
@@ -93,8 +91,27 @@ if menu_opcion_foto == "S" or menu_opcion_foto == "s":
 else:
         total = precio_entrada     
 
-
+print("\n===================================")
+print(f"Visitante: {nombre_visitante}")
+print(f"El precio de la entrada es: {precio_entrada} €")
+print(f"El precio del menú es: {MENU} €")
+print(f"El precio de la foto es: {FOTO} €")
 print(f"Tu saldo final es {total} €")
+print("===================================")
+print("""
+      MULTICINES BOLAÑOS
+   ,    ,    /\\   /\\
+  /( /\\ )\\  _\\ \\_/ /_
+  |\\_||_/| < \\_   _/ >
+  \\______/  \\|0   0|/
+    _\\/__   _(_  ^  _)_
+   ( () ) /\\\`\\|V\\\"\\\"\\\"V|/\\\`\\
+     {}   \\/  \\\\_____/  /
+     ()   /\\   )=(   /\\
+     {}  /  \\\\_/\\=/\\_/  \\
+
+	 aka. Patronux
+""")
 
 
 
