@@ -1,4 +1,3 @@
-
 '''Ejercicio 2. Compra en el supermercado
 Imagina que tienes 200 euros en tu cuenta corriente y vas a hacer la compra en el supermercado.
 
@@ -14,24 +13,6 @@ Reste del saldo inicial el precio de cada producto.
 Cuando el usuario haya introducido el precio del último producto, muestre el saldo final que queda en la cuenta corriente.
 Importante: Los precios pueden contener decimales. Para este ejercicio, puedes suponer que hay saldo suficiente para pagar todos los productos.
 '''
-
-saldo_inicial =  200
-
-print(f"Tu saldo inicial es {saldo_inicial} €")
-
-precio_huevos = float(input("Precio de una docena de huevos es (€): "))
-
-precio_helados = float(input("Precio de una caja de helados (€): "))
-
-precio_barrapan = float(input("Precio de una barra de pan (€): "))
-
-precio_racimouvas = float(input("Precio de un racimo de uvass (€): "))
-
-
-saldo_final = saldo_inicial - precio_huevos - precio_helados - precio_barrapan - precio_racimouvas
-
-print(f"Tu saldo final es {saldo_final} €")
-
 
 '''Ampliación del ejercicio 2: IVA por producto
 Cuando termines el ejercicio básico, añade una mejora al programa.
@@ -54,23 +35,22 @@ saldo_inicial =  200
 
 print(f"Tu saldo inicial es {saldo_inicial} €")
 
-print(f"¿Quieres el precio con IVA?")
+precio_huevos = float(input("Precio de una docena de huevos es (€): "))
+precio_helados = float(input("Precio de una caja de helados (€): "))
+precio_barrapan = float(input("Precio de una barra de pan (€): "))
+precio_racimouvas = float(input("Precio de un racimo de uvass (€): "))
 
-opcion_menu = input(input("¿Quieres el precio con IVA (S/N)"))
-    if opcion_menu == "S" or opcion_menu == "s":
-        precio_huevos_iva = float(input("Precio de una docena de huevos es (€): ")) * 1.10
+opcion_menu = input("¿Quieres el precio con IVA (S/N)")
+if opcion_menu == "S" or opcion_menu == "s":
 
-        precio_helados_iva = float(input("Precio de una caja de helados (€): ")) * 1.21
+        precio_huevos = precio_huevos * 1.10
+        precio_helados = precio_helados * 1.21
+        precio_barrapan = precio_barrapan * 1.10
+        precio_racimouvas = precio_racimouvas * 1.21
 
-        precio_barrapan_iva = float(input("Precio de una barra de pan (€): ")) * 1.10
 
-        precio_racimouvas_iva = float(input("Precio de un racimo de uvass (€): ")) * 1.21
-
-        saldo_final = saldo_inicial - precio_huevos - precio_helados - precio_barrapan - precio_racimouvas
-
-        print(f"Tu saldo final es {saldo_final} €")
-    
-    else:
+saldo_final = saldo_inicial - precio_huevos - precio_helados - precio_barrapan - precio_racimouvas
+print(f"Tu saldo final es {saldo_final} €")
 
 
 
