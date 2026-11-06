@@ -29,7 +29,7 @@ class Tarea:
         # La tarea puede crearse sin un usuario responsable.
         # Se podrá asignar posteriormente mientras esté en estado BORRADOR.
         self.responsable = None # Esto significa que todavía no hay ningún usuario asociado
-        self.crq = None # Esto significa que todavía no hay CRQ asociado.
+        self.proyecto = None # Esto significa que todavía no hay PROYECTO asociado.
     
     
     # Método para completar la creación de una tarea.
@@ -41,34 +41,60 @@ class Tarea:
         
         # Reviso que esté instanciado el atributo titulo
         if self.titulo == "":
-            print("Error: el título es obligatorio")
+            print("Error: el título de la tarea es obligatorio")
             datos_completos = False
         
         if self.descripcion == "":
-            print("Error: La descripción es obligatoria")
+            print("Error: La descripción de la tarea es obligatoria")
             datos_completos = False
         
         if self.responsable is None:
-            print("Error: Tiene que existir un responsable asignado")
+            print("Error: Tiene que existir un responsable asignado a la tarea asignado")
             datos_completos = False
         
-        if self.crq is None:
-            print("Error: Tiene que existir un CRQ asociado")
+        if self.proyecto is None:
+            print("Error: Tiene que existir un PROYECTO asociado")
             datos_completos = False
     
         # Saber si alguna de las cuatro condiciones ha fallado para cambiar el estado de BORRADOR en PENDIENTE
         if datos_completos == True:
             
             # Aquí cambiaremos el estado a PENDIENTE.
-            respuesta = input("¿Quieres pasar la tarea a PENDIENTE? (S/N): ")
+            respuesta_tarea = input("¿Quieres pasar la tarea a PENDIENTE? (S/N): ")
             
-            if respuesta == "S" or respuesta == "s":
+            if respuesta_tarea == "S" or respuesta_tarea == "s":
                 self.estado = "PENDIENTE"
             else:
                 self.estado = "BORRADOR"
         else:
             # Aquí indicaremos que no se puede completar la tarea.
             print("Completa todos los campos para que pueda cambiar el estado")
+    
+    # Método para cambiar el estado de PENDIENTE a EN PROGRESO una tarea.
+    # Comprueba que todos los campos obligatorios están informados.
+    def iniciar_Tarea(self):
+
+            # Aquí cambiaremos el estado a EN PROGRESO.
+            respuesta_tarea_iniciar = input("¿Quieres pasar la tarea a EN PROGRESO? (S/N): ")
+            
+            if respuesta_tarea_iniciar == "S" or respuesta_tarea_iniciar == "s":
+                self.estado = "EN PROGRESO"
+            else:
+                self.estado = "PENDIENTE"
+
+    # Método para cambiar el estado de PENDIENTE a EN PROGRESO una tarea.
+    # Comprueba que todos los campos obligatorios están informados.
+    def completar_Tarea(self):
+
+            # Aquí cambiaremos el estado a EN PROGRESO.
+            respuesta_tarea_completar = input("¿Quieres pasar la tarea a COMPLETADA? (S/N): ")
+            
+            if respuesta_tarea_completar == "S" or respuesta_tarea_completar == "s":
+                self.estado = "COMPLETADA"
+            else:
+                self.estado = "EN PROGRESO"
+        
+    
 
 ################################# FASE DE ASIGNACIÓN TAREA A USUARIO ##########################
     # Método para asignar una tarea a un usuario
