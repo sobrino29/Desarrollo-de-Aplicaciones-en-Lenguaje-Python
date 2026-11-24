@@ -152,8 +152,6 @@ Explica brevemente:
 
 ## Parte 3. Implementamos la clase
 
----
-
 Modifica `altavoz.py` para cumplir los requisitos siguientes.
 
 ### Requisito 1. Validar el nombre
@@ -175,6 +173,21 @@ Modifica `altavoz.py` para cumplir los requisitos siguientes.
 - El resto del programa no debe poder cambiarlo mediante una asignación ordinaria a `altavoz.estado`.
 - El método `encender()` permitirá encender el dispositivo.
 - El método `apagar()` permitirá apagarlo.
+
+### Explicación del uso de propiedades
+
+<span style="color: #3498DB; font-size: 14px;">
+
+    He utilizado `@property` para consultar (que no modificar) los atributos internos de la clase mediante interfaz pública.
+
+    Los atributos nombre, volumen y estado se pueden consultar con getter (@property), y dependiendo el caso se pueden modificar (setter).
+
+    - **nombre:** permite consultar el nombre y modificarlo mediante un setter que comprueba que sea una cadena no vacía y elimina los espacios exteriores.
+
+    - **volumen:** permite consultar y modificar el volumen mediante un setter que comprueba que sea un número entero entre 0 y 100.
+
+    - **estado:** permite consultar si el altavoz está encendido o apagado, pero no dispone de setter público. Su modificación se realiza mediante los métodos `encender()` y `apagar()`.
+</span>
 
 ## Requisito 4. Mantener una interfaz clara
 
@@ -236,7 +249,44 @@ No es necesario probar todos los casos con un único programa. Puedes ejecutar c
 ## 4.3. Registra los resultados
 Crea una tabla con tres columnas: ID, resultado obtenido y ¿coincide con el esperado?
 
+### 4.3. Registro de resultados
+
+| ID  | Resultado obtenido                  | ¿Coincide? |
+| --- | ----------------------------------- | ---------- |
+| V01 | Altavoz creado correctamente        | Sí         |
+| V02 | Devuelve `"Salón"`                  | Sí         |
+| V03 | Devuelve `30`                       | Sí         |
+| V04 | Devuelve `"apagado"`                | Sí         |
+| V05 | Se acepta el volumen `50`           | Sí         |
+| V06 | Se acepta el volumen `0`            | Sí         |
+| V07 | Se acepta el volumen `100`          | Sí         |
+| V08 | Estado `"encendido"`                | No         |
+| V09 | Estado `"apagado"`                  | No         |
+| V10 | Devuelve `"Cocina"`                 | Sí         |
+| I01 | `raise ValueError("El nombre no puede estar vacío")`                        | Sí         |
+| I02 | `raise ValueError("El nombre no puede estar vacío")`                        | Sí         |
+| I03 | `raise ValueError("El nombre debe ser una cadena de texto")`                        | Sí         |
+| I04 | `raise ValueError("El volumen debe estar entre 0 y 100")`                        | Sí         |
+| I05 | `raise ValueError("El volumen debe estar entre 0 y 100")`                        | Sí         |
+| I06 | `raise ValueError("El volumen debe ser un número entero")`                        | Sí         |
+| I07 | `raise ValueError("El volumen debe ser un número entero")`                        | Sí         |
+| I08 | `AttributeError: property 'estado' of 'Altavoz' object has no`                    | Sí         |
+
 Si una prueba falla, no cambies inmediatamente el resultado esperado para hacerla coincidir con el programa. Primero investiga si el error está en la implementación.
+
+En las pruebas V08 y V09 he tenido que ajustar el código porque tenía puesto booleanos, para con una condición indicarle un string.
+
+    `@property
+    def estado(self) -> str:
+  
+    # Se ajusta porque nos indican que tiene que devolver apagado no false    
+        if self._estado == False:
+            return "apagado"
+        else:
+            return "encendido"
+            
+        # Le indico la manera de consultar un atributo interno, el estado podrá consultarse mediante altavoz.estado.
+        return self._estado`
 
 ## Parte 5. IA como revisora del diseño
 Cuando tengas una primera versión funcional, utiliza la IA para revisar el código.
@@ -267,16 +317,164 @@ No afirmes que el código funciona sin haberlo ejecutado.
 No introduzcas listas, diccionarios, herencia ni conceptos que todavía no hemos estudiado.
 
 Código:
-[PEGA AQUÍ TU IMPLEMENTACIÓN]
+[PEGA AQUÍ TU IMPLEMENTACIÓN]<br>
+<span style="color: #34db3f; font-size: 14px;">
+    He revisado los tres ficheros: altavoz.py, main.py y pruebas_manuales.py. Voy a seguir el prompt de tu actividad: comprobar cada requisito, señalar errores y proponerte pruebas, sin reescribirte la clase completa.<br>
+</span>
+
+<span style="color: #34db3f; font-size: 14px;">
+    En general, vas por buen camino. Has utilizado correctamente @property, los setters y los atributos internos con guion bajo (_nombre, _volumen, _estado).
+    1. Revisión de altavoz.py
+    Requisito 1. Validar el nombre
+    Correcto
+    Tu código comprueba tres cosas:
+    - Que el nombre sea una cadena (str).
+    - Que no esté vacío ni contenga únicamente espacios.
+    - Que elimine los espacios exteriores con .strip() antes de almacenarlo.
+    Además, utilizas self._nombre para guardar el dato internamente. Correcto.<br>
+    Requisito 2. Validar el volumen
+    Correcto, con una mejora
+    Has comprobado que:
+    - Sea un número entero.
+    - No sea inferior a 0.
+    - No sea superior a 100.
+    - Se aplique la misma validación al crear el objeto y al modificarlo.
+    La condición nuevo_volumen < 0 or nuevo_volumen > 100 está bien planteada: permite los valores 0 y 100.
+
+    Hay un pequeño caso especial de Python que conviene conocer: bool es una subclase de int. Por eso, True y False también pasan tu comprobación con isinstance(nuevo_volumen, int).
+
+    Podrías estudiar cómo impedir que se acepten valores booleanos como volumen. No es necesario cambiar nada más de tu validación.
+</span>
+    Requisito 3. Controlar el estado
+    Correcto, con código sobrante
+    Has hecho bien en:
+    - Inicializar _estado como False.
+    - Devolver "apagado" cuando es False.
+    - Devolver "encendido" cuando es True.
+    - Modificarlo únicamente mediante encender() y apagar().
+    - No crear un setter para estado.
+    Hay una cosa que debes limpiar: después del if/else tienes otro return self._estado. Ese código nunca se ejecuta, porque las dos ramas anteriores ya devuelven un resultado.
+
+    No es un error que cambie el comportamiento, pero sobra.
+    Requisito 4. Mantener una interfaz clara
+    Correcto
+    Tu main.py utiliza la interfaz pública:
+    altavoz.nombrealtavoz.volumenaltavoz.estadoaltavoz.volumen = 50altavoz.encender()altavoz.apagar()
+</span>
+<span style="color: #34db3f; font-size: 14px;">
+
+
+    No necesita acceder a _nombre, _volumen ni _estado. Esto cumple lo que pide el ejercicio.
+    2. Revisión de main.py
+    Correcto en general
+    El programa crea el altavoz, consulta sus propiedades, cambia el volumen y utiliza los métodos de encendido y apagado.
+
+    También has añadido bloques try-except para comprobar las excepciones. Es una buena forma de verificar que las validaciones funcionan sin detener todo el programa.
+
+    Dos observaciones:
+    1. Llamas primero a apagar() y después a encender(). No está mal, pero si quieres comprobar ambas operaciones, consulta altavoz.estado después de cada una.
+    2. La prueba de asignar altavoz.estado = True está bien planteada: debe provocar AttributeError, porque no has definido un setter.
+    3. Revisión de pruebas_manuales.py
+    Aquí hay algunas cosas que conviene mejorar.
+
+    A. Pruebas válidas
+
+    Las pruebas V01-V10 están planteadas correctamente. Compruebas creación, consultas, modificaciones, límites del volumen, estado y eliminación de espacios.
+
+    He visto dos pequeños errores en los mensajes:
+    - En V02 imprimes V01 en lugar de V02.
+    - En V09 imprimes V08 en lugar de V09.
+    No afectan al funcionamiento, pero conviene corregirlos para que el registro sea claro.
+
+    B. Pruebas inválidas
+
+    Tienes las pruebas I01-I07 comentadas con #. Eso significa que no se ejecutan.
+
+    Además, en I08 tienes esto:
+    altavoz.estado = "encendido"print(altavoz.estado)
+
+
+
+    La primera línea debe provocar AttributeError, por lo que la segunda no llegará a ejecutarse.
+
+    Mi recomendación es que utilices un try-except independiente para cada prueba inválida, como ya has hecho en main.py.
+
+    Así podrás comprobar todas sin que la primera excepción detenga el resto.
+    4. Posibles problemas de diseño
+    Hay tres recomendaciones que me parecen especialmente útiles:
+    Recomendación	Motivo
+    Eliminar el return self._estado sobrante	Evitas código innecesario.
+    Corregir los mensajes V02 y V09	Facilitas la identificación de cada prueba.
+    Capturar las excepciones de I01-I08	Permites ejecutar todas las pruebas inválidas.
+
+    También he detectado algo importante en I06:
+
+    En el enunciado de tu prueba pone:
+    altavoz.volumen = 25.5
+
+
+
+    Pero en el fichero tienes comentado:
+    #altavoz = Altavoz("Salón", 25.5)
+
+
+
+    No son exactamente la misma prueba. La primera comprueba que el setter rechaza un volumen decimal al modificar un objeto ya creado. Es la que te pide la tabla.
+    5. Pruebas adicionales que te propongo
+    Estas son pruebas que puedes añadir para comprobar casos que no aparecen expresamente en tu tabla:
+    Prueba	Operación	Resultado esperado
+    Extra 1	Asignar altavoz.nombre = "   "	ValueError
+    Extra 2	Asignar altavoz.volumen = 25.5	ValueError
+    Extra 3	Asignar altavoz.volumen = True	Actualmente tu código lo acepta; sería interesante corregirlo
+    Extra 4	Encender y consultar el estado	"encendido"
+    Extra 5	Apagar y consultar el estado	"apagado"
+
+    6. Mi valoración general
+    Diseño de la clase
+    Bien planteado
+
+
+    Validación del nombre
+    Correcta
+
+    Validación del volumen
+    Correcta, con mejora
+
+    Control del estado
+    Correcto
+
+    Interfaz pública
+    Correcta
+
+    Pruebas manuales
+    Por completar
+
+
+    Mi conclusión: no veo problemas importantes en el diseño general de tu clase. Has entendido la idea principal del laboratorio: la propia clase debe proteger sus datos y controlar cómo se modifican.
+
+    Una última aclaración: esta es una revisión estática del código que me has enviado; no he ejecutado los ficheros. Por tanto, no voy a afirmar que todas las pruebas pasan.
+
+    Para tu apartado 5 del laboratorio.md, puedes utilizar dos recomendaciones reales de esta revisión: la comprobación de valores booleanos en el volumen y la corrección de las pruebas inválidas para que se ejecuten con try-except. Después tendrás que decidir si las aceptas y comprobarlas.
+</span>
 
 Actividad de verificación
 Selecciona dos recomendaciones de la IA y decide si son correctas.
 
 Recomendación de la IA	¿La acepto?	Justificación	¿Cómo la he verificado?
-Recomendación 1	Sí / No	Explicación	Prueba o análisis del código
-Recomendación 2	Sí / No	Explicación	Prueba o análisis del código
-La IA no sustituye a las pruebas: sus propuestas deben contrastarse con los requisitos y con el comportamiento real del programa.
+<br>
+<span style="color: #344ddb; font-size: 14px;">
+    Acepto lo que me recomienda la IA pero no lo comparto, porque para probar los try-except si dejo todos activos en el momento que salte uno, se me sale de la ejecución.
+<span>
 
+Recomendación 1	Sí / No	Explicación	Prueba o análisis del código <br>
+<span style="color: #344ddb; font-size: 14px;">
+    Acepto lo que me recomienda la IA acerca de la comprobación de valores booleanos en el atributo volumen, prefiero trabajar con este tipo de datos antes que con string, lo veo más seguro
+<span>
+Recomendación 2	Sí / No	Explicación	Prueba o análisis del código
+La IA no sustituye a las pruebas: sus propuestas deben contrastarse con los requisitos y con el comportamiento real del programa. <br>
+<span style="color: #344ddb; font-size: 14px;">
+    No acepto lo que me recomienda la IA acerca de que no aparecen las pruebas, dado que si aparecen, tanto en el fichero pruebas_manuales.py como en el fichero main.py y el hecho de que esté comentadas es para probar una por una, sin que ello suponga la salida de la ejecución.
+<span>
 ## Parte 6. Entrega y reflexión final
 Entrega el proyecto con esta estructura:
 
@@ -290,9 +488,13 @@ smart-speaker/
 ```
 El documento docs/laboratorio.md debe incluir:
 
-Las reglas de negocio identificadas.
-La tabla de diseño de la interfaz pública.
-Una explicación de las propiedades utilizadas.
-Los resultados de las pruebas válidas e inválidas.
-Dos recomendaciones de la IA y la decisión tomada sobre ellas.
-Una reflexión final: ¿qué ventajas tiene que la clase controle sus propias reglas?
+1.Las reglas de negocio identificadas. <br>
+2.La tabla de diseño de la interfaz pública. <br>
+3.Una explicación de las propiedades utilizadas. <br>
+4.Los resultados de las pruebas válidas e inválidas. <br>
+5.Dos recomendaciones de la IA y la decisión tomada sobre ellas. <br>
+
+6.Una reflexión final: ¿qué ventajas tiene que la clase controle sus propias reglas?
+<span style="color: #3498DB; font-size: 14px;">
+    <br>Que se encarga de proteger sus datos y garantizar que se cumplan las reglas establecidas de negocio, evitando que otras partes del programa introduzcan valores incorrectos.
+</span>

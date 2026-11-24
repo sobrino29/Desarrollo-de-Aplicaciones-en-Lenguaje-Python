@@ -34,10 +34,10 @@ class Altavoz:
     def volumen(self):
         return self._volumen
     
-    ## Debe ser un número entero.
+    ## Debe ser un número entero, por lo que le indicamos que compruebe que no entran booleanos
     @volumen.setter
     def volumen(self, nuevo_volumen):
-        if not isinstance(nuevo_volumen, int):
+        if isinstance(nuevo_volumen, bool) or not isinstance(nuevo_volumen, int):
             raise ValueError("El volumen debe ser un número entero")
     
     ## Su valor estará comprendido entre 0 y 100, ambos incluidos. Para poner el 0 y el 100 incluidos los ponemos fuera de escala.
@@ -53,9 +53,16 @@ class Altavoz:
     ####-----.PARTE 3, REQUISITO 3, INICIO EJERCICIO 3.-----####
     ## Requisito 3. Controlar el estado
     @property
-    def estado(self):
+    def estado(self) -> str:
+  
+    # Se ajusta porque nos indican que tiene que devolver apagado no false    
+        if self._estado == False:
+            return "apagado"
+        else:
+            return "encendido"
+            
         # Le indico la manera de consultar un atributo interno, el estado podrá consultarse mediante altavoz.estado.
-        return self._estado
+        #return self._estado
     
     ## El resto del programa no debe poder cambiarlo mediante una asignación ordinaria a altavoz.estado por eso no lleva @setter
     
